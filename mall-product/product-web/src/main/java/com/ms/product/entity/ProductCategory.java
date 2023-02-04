@@ -1,19 +1,16 @@
 package com.ms.product.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
+@TableName(value = "tb_newbee_mall_goods_category")
 public class ProductCategory {
-
+    @TableId(value = "category_id")
     private Long categoryId;
 
     private Byte categoryLevel;

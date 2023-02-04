@@ -24,5 +24,10 @@ spring:
       transport:
         dashboard: 127.0.0.1:8858
         port: 8719
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

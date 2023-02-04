@@ -1,17 +1,16 @@
 package com.ms.product.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@TableName(value = "tb_newbee_mall_goods_info")
 public class Product {
-
+    @TableId(value = "goods_id")
     private Long goodsId;
 
     private String goodsName;
