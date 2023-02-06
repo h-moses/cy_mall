@@ -2,13 +2,12 @@ package com.ms.user.controller;
 
 import com.alibaba.nacos.common.utils.MD5Utils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.ms.common.annotation.TokenToMallUser;
 import com.ms.common.api.CommonResult;
 import com.ms.common.enums.ServiceResultEnum;
-import com.ms.common.exception.MallException;
 import com.ms.common.pojo.UserToken;
 import com.ms.common.utils.NumberUtil;
 import com.ms.common.utils.SystemUtil;
-import com.ms.user.config.annotations.TokenToMallUser;
 import com.ms.user.controller.param.UserLoginParam;
 import com.ms.user.controller.param.UserRegisterParam;
 import com.ms.user.controller.param.UserUpdateParam;

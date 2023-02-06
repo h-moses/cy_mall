@@ -1,10 +1,10 @@
 package com.ms.user.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.ms.common.annotation.TokenToAdminUser;
 import com.ms.common.api.CommonResult;
 import com.ms.common.pojo.AdminToken;
 import com.ms.common.utils.SystemUtil;
-import com.ms.user.config.annotations.TokenToAdminUser;
 import com.ms.user.controller.param.AdminLoginParam;
 import com.ms.user.controller.param.UpdateAdminNameParam;
 import com.ms.user.controller.param.UpdateAdminPasswordParam;

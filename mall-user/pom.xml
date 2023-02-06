@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>mall-user-web</module>
+        <module>mall-user-api</module>
     </modules>
 
     <properties>

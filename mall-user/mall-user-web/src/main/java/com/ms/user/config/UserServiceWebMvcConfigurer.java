@@ -35,6 +35,5 @@ public class UserServiceWebMvcConfigurer implements WebMvcConfigurer {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(adminUserMethodArgumentResolver);
         resolvers.add(mallUserMethodArgumentResolver);
-        WebMvcConfigurer.super.addArgumentResolvers(resolvers);
     }
 }
