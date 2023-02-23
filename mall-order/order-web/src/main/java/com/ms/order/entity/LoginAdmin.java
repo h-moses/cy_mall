@@ -1,10 +1,9 @@
-package com.ms.product.entity;
+package com.ms.order.entity;
 
 import lombok.Data;
 
 @Data
-public class LoginAdminUser {
-
+public class LoginAdmin {
     private Long adminUserId;
 
     private String loginUserName;

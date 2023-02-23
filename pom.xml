@@ -7,7 +7,6 @@
         <module>mall-product</module>
         <module>mall-order</module>
         <module>mall-user</module>
-        <module>mall-recommend</module>
         <module>mall-common</module>
     </modules>
     <parent>

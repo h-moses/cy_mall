@@ -15,7 +15,7 @@ public abstract class BeanUtil {
         return target;
     }
 
-    public static <T> List<T> copyList(List sources, Class<T> clazz, Callback<T> callback) {
+    public static <T> List<T> copyList(List sources, Class<T> clazz) {
         List<T> targetList = new ArrayList<>();
         if (null != sources) {
             for (Object source: sources) {
@@ -28,9 +28,6 @@ public abstract class BeanUtil {
                     e.printStackTrace();
                 }
                 copyProperties(source, t);
-                if (null != callback) {
-                    callback.set(source, t);
-                }
                 targetList.add(t);
             }
         }

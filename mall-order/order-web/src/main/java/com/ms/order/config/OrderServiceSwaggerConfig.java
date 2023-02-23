@@ -1,4 +1,4 @@
-package com.ms.user.config;
+package com.ms.order.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -20,15 +20,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Configuration
-public class UserServiceSwaggerConfig {
-
+public class OrderServiceSwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo())
                 .enable(true)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ms.user.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.ms.order.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -36,7 +35,7 @@ public class UserServiceSwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("用户接口文档")
+                .title("订单接口文档")
                 .description("swagger接口文档")
                 .version("1.0")
                 .build();

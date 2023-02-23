@@ -1,9 +1,11 @@
-package com.ms.product.entity;
+package com.ms.order.config.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-public class LoginAdminUser {
+@TableName(value = "tb_newbee_mall_admin_user")
+public class Admin {
 
     private Long adminUserId;
 
