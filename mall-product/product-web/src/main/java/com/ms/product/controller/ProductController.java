@@ -67,7 +67,7 @@ public class ProductController {
         Page<Product> productPage = productService.page(page, queryWrapper);
         Page<SearchProductVO> searchProductVOPage = new Page<>();
         if (productPage.getTotal() != 0) {
-            List<SearchProductVO> searchProductVOS = BeanUtil.copyList(productPage.getRecords(), SearchProductVO.class, null);
+            List<SearchProductVO> searchProductVOS = BeanUtil.copyList(productPage.getRecords(), SearchProductVO.class);
             for (SearchProductVO searchProductVO: searchProductVOS) {
                 String goodsName = searchProductVO.getGoodsName();
                 String goodsIntro = searchProductVO.getGoodsIntro();

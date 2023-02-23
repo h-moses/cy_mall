@@ -41,7 +41,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, ProductCate
                         BeanUtil.copyProperties(productCategory, secondLevelCategoryVO);
                         if (thirdMap.containsKey(productCategory.getCategoryId())) {
                             List<ProductCategory> productCategories = thirdMap.get(productCategory.getParentId());
-                            secondLevelCategoryVO.setThirdLevelCategoryVOS(BeanUtil.copyList(productCategories, ThirdLevelCategoryVO.class, null));
+                            secondLevelCategoryVO.setThirdLevelCategoryVOS(BeanUtil.copyList(productCategories, ThirdLevelCategoryVO.class));
                             secondLevelCategoryVOS.add(secondLevelCategoryVO);
                         }
                     }
