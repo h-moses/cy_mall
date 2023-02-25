@@ -1,4 +1,4 @@
-package com.ms.order.config.resolvers;
+package com.ms.cart.config.resolver;
 
 import com.ms.common.annotation.TokenToMallUser;
 import com.ms.common.api.CommonResult;
@@ -7,8 +7,8 @@ import com.ms.common.exception.MallException;
 import com.ms.common.pojo.UserToken;
 import com.ms.user.api.UserServiceFeign;
 import com.ms.user.api.dto.MallUserDTO;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -16,7 +16,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.annotation.Resource;
 
-@Component
+@Configuration
 public class TokenToMallUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Resource
@@ -35,13 +35,13 @@ public class TokenToMallUserMethodArgumentResolver implements HandlerMethodArgum
         if (parameter.getParameterAnnotation(TokenToMallUser.class) instanceof TokenToMallUser) {
             String token = webRequest.getHeader("token");
             if (null != token && !"".equals(token) && token.length() == 32) {
-                CommonResult<MallUserDTO> result = userServiceFeign.getMallUserByToken(token);
-                if (result == null || result.getCode() != 200 || result.getData() == null) {
+                CommonResult<MallUserDTO> mallUserByToken = userServiceFeign.getMallUserByToken(token);
+                if (mallUserByToken == null || mallUserByToken.getCode() != 200 || mallUserByToken.getData() == null) {
                     MallException.fail(ServiceResultEnum.TOKEN_EXPIRE_ERROR.getResult());
                 }
                 UserToken userToken = new UserToken();
                 userToken.setToken(token);
-                userToken.setUserId(result.getData().getUserId());
+                userToken.setUserId(mallUserByToken.getData().getUserId());
                 return userToken;
             } else {
                 MallException.fail(ServiceResultEnum.NOT_LOGIN_ERROR.getResult());

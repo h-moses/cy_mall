@@ -8,6 +8,7 @@
         <module>mall-order</module>
         <module>mall-user</module>
         <module>mall-common</module>
+        <module>mall-shopping-cart</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
