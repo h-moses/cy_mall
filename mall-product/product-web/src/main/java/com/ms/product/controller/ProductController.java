@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@Api(tags = "商品相关借口")
+@Api(tags = "商品相关接口")
 @RequestMapping("/goods/mall")
 public class ProductController {
 

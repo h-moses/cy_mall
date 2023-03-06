@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName(value = "tb_newbee_mall_user_address")
+@TableName(value = "mall_user_address")
 public class MallUserAddress {
 
     @TableId

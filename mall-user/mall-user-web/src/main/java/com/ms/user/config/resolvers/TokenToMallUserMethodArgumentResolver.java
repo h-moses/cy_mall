@@ -35,7 +35,7 @@ public class TokenToMallUserMethodArgumentResolver implements HandlerMethodArgum
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         if (parameter.getParameterAnnotation(TokenToMallUser.class) instanceof TokenToMallUser) {
             String token = webRequest.getHeader("token");
             if (null != token && !"".equals(token) && token.length() == 32) {

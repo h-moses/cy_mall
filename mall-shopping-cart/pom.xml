@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>shopping-cart-web</module>
-        <module>shopping-cart-api</module>
     </modules>
 
     <properties>

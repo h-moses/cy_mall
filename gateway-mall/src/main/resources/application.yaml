@@ -24,11 +24,16 @@ spring:
           predicates:
             - Path=/user/mall/**
         -
-          id: product-service-route
+          id: goods-service-route
           uri: lb://mall-product-service
           order: 1
           predicates:
             - Path=/goods/mall/**
+        -
+          id: goods-service-route-2
+          uri: lb://mall-product-service
+          order: 1
+          predicates:
             - Path=/categories/mall/**
         -
           id: shopping-cart-service-route

@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName(value = "tb_newbee_mall_order")
+@TableName(value = "mall_order")
 public class MallOrder {
     @TableId
     private Long orderId;

@@ -40,10 +40,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, ProductCate
                         SecondLevelCategoryVO secondLevelCategoryVO = new SecondLevelCategoryVO();
                         BeanUtil.copyProperties(productCategory, secondLevelCategoryVO);
                         if (thirdMap.containsKey(productCategory.getCategoryId())) {
-                            List<ProductCategory> productCategories = thirdMap.get(productCategory.getParentId());
+                            List<ProductCategory> productCategories = thirdMap.get(productCategory.getCategoryId());
                             secondLevelCategoryVO.setThirdLevelCategoryVOS(BeanUtil.copyList(productCategories, ThirdLevelCategoryVO.class));
-                            secondLevelCategoryVOS.add(secondLevelCategoryVO);
                         }
+                        secondLevelCategoryVOS.add(secondLevelCategoryVO);
                     }
                     // 处理一级分类
                     if (!CollectionUtils.isEmpty(secondLevelCategoryVOS)) {
@@ -54,8 +54,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, ProductCate
                             if (collect.containsKey(productCategory.getCategoryId())) {
                                 List<SecondLevelCategoryVO> secondLevelCategoryVOS1 = collect.get(productCategory.getCategoryId());
                                 indexCategoryVO.setSecondLevelCategoryVOS(secondLevelCategoryVOS1);
-                                indexCategoryVOS.add(indexCategoryVO);
                             }
+                            indexCategoryVOS.add(indexCategoryVO);
                         }
                     }
                 }
@@ -68,11 +68,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, ProductCate
 
     public QueryWrapper<ProductCategory> setCategoryCondition(List<Long> parentId, int level, int limit) {
         QueryWrapper<ProductCategory> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("parent_id", parentId);
-        queryWrapper.eq("category_level", level);
-        queryWrapper.eq("is_deleted", 0);
-        queryWrapper.orderByDesc("category_rank");
-        queryWrapper.last("limit " + limit);
+        queryWrapper.in("parent_id", parentId)
+                .eq("category_level", level)
+                .orderByDesc("category_rank")
+                .last(limit > 0,"limit " + limit);
         return queryWrapper;
     }
 }

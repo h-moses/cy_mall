@@ -2,13 +2,15 @@ package com.ms.cart.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
+@TableName(value = "mall_shopping_cart_item")
 public class ShoppingCartItem {
-    @TableId
+    @TableId(value = "cart_item_id")
     private Long cartItemId;
 
     private Long userId;
