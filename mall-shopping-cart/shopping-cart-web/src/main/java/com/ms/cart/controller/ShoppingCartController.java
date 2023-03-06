@@ -25,7 +25,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@Api(value = "v1", tags = "购物车相关接口")
+@Api(tags = "购物车相关接口")
 public class ShoppingCartController {
 
     @Resource

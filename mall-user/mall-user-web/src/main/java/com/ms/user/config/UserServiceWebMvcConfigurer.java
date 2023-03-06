@@ -21,15 +21,6 @@ public class UserServiceWebMvcConfigurer implements WebMvcConfigurer {
     @Resource
     private TokenToMallUserMethodArgumentResolver mallUserMethodArgumentResolver;
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        WebMvcConfigurer.super.addResourceHandlers(registry);
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        WebMvcConfigurer.super.addInterceptors(registry);
-    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {

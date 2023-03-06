@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @Slf4j
 @Api(tags = "管理员操作相关接口")
+@RequestMapping(value = "/user/admin/")
 public class AdminController {
 
     @Resource
@@ -33,7 +34,7 @@ public class AdminController {
     private RedisTemplate redisTemplate;
 
     @ApiOperation(value = "登录接口", notes = "返回token")
-    @PostMapping(value = "/users/admin/login")
+    @PostMapping(value = "login")
     public CommonResult login(@RequestBody @Valid AdminLoginParam adminLoginParam) {
         Admin admin = adminService.getOne(new QueryWrapper<Admin>().eq("login_user_name", adminLoginParam.getUserName()).eq("login_password", adminLoginParam.getPasswordMD5()).eq("locked", 0));
         if (null != admin) {
@@ -49,7 +50,7 @@ public class AdminController {
     }
 
     @ApiOperation(value = "获取管理员信息接口")
-    @PostMapping(value = "/users/admin/profile")
+    @PostMapping(value = "profile")
     public CommonResult profile(@TokenToAdminUser AdminToken adminToken) {
         Admin admin = adminService.getById(adminToken.getAdminId());
         if (null != admin) {
@@ -60,7 +61,7 @@ public class AdminController {
     }
 
     @ApiOperation(value = "修改管理员密码接口")
-    @PutMapping(value = "/users/admin/password")
+    @PutMapping(value = "password")
     public CommonResult updatePass(@RequestBody @Valid UpdateAdminPasswordParam adminPasswordParam, @TokenToAdminUser AdminToken adminToken) {
         Admin admin = adminService.getById(adminToken.getAdminId());
         if (null != admin) {
@@ -76,7 +77,7 @@ public class AdminController {
     }
 
     @ApiOperation(value = "修改管理员信息接口")
-    @RequestMapping(value = "/users/admin/name", method = RequestMethod.PUT)
+    @RequestMapping(value = "name", method = RequestMethod.PUT)
     public CommonResult updateName(@RequestBody @Valid UpdateAdminNameParam adminNameParam, @TokenToAdminUser AdminToken adminToken) {
         Admin admin = adminService.getById(adminToken.getAdminId());
         if (null != admin) {
@@ -92,7 +93,7 @@ public class AdminController {
     }
 
     @ApiOperation(value = "管理员退出登录的接口")
-    @DeleteMapping(value = "/users/admin/logout")
+    @DeleteMapping(value = "logout")
     public CommonResult logout(@TokenToAdminUser AdminToken adminToken) {
         Boolean delete = redisTemplate.delete(adminToken.getToken());
         if (delete) {
@@ -103,7 +104,7 @@ public class AdminController {
     }
 
     @ApiOperation(value = "根据token获取管理员信息的接口", notes = "OpenFeign调用")
-    @GetMapping(value = "/users/admin/{token}")
+    @GetMapping(value = "{token}")
     public CommonResult getAdminInfoByToken(@PathVariable("token") String token) {
         ValueOperations<String, AdminToken> ops = redisTemplate.opsForValue();
         AdminToken adminToken = ops.get(token);

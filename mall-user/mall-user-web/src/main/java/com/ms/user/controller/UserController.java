@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @Slf4j
 @Api(tags = "用户操作相关接口")
+@RequestMapping(value = "/user/mall/")
 public class UserController {
 
     @Resource
@@ -36,13 +37,13 @@ public class UserController {
     @Resource
     private RedisTemplate<String, UserToken> redisTemplate;
 
-    @PostMapping("/login")
+    @PostMapping("login")
     @ApiOperation(value = "登录接口", notes = "返回token")
     public CommonResult login(@RequestBody @Valid UserLoginParam userLoginParam) {
         if (!NumberUtil.isPhone(userLoginParam.getLoginName())) {
             return CommonResult.failure(ServiceResultEnum.LOGIN_NAME_IS_NOT_PHONE.getResult());
         }
-        User user = userService.getOne(new QueryWrapper<User>().eq("login_name", userLoginParam.getLoginName()).eq("password_md5", userLoginParam.getPasswordMd5()).eq("is_deleted", 0));
+        User user = userService.getOne(new QueryWrapper<User>().eq("login_name", userLoginParam.getLoginName()).eq("password_md5", userLoginParam.getPasswordMd5()));
         if (null != user) {
             if (user.getLockedFlag() == 1) {
                 return CommonResult.failure(ServiceResultEnum.LOGIN_USER_LOCKED_ERROR.getResult());
@@ -59,7 +60,7 @@ public class UserController {
         return CommonResult.failure("登录失败");
     }
 
-    @PostMapping("/logout")
+    @PostMapping("logout")
     @ApiOperation(value = "登出接口", notes = "清除token")
     public CommonResult logout(@TokenToMallUser UserToken userToken) {
         Boolean delete = redisTemplate.delete(userToken.getToken());
@@ -70,7 +71,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/register")
+    @PostMapping("register")
     @ApiOperation(value = "用户注册", notes = "")
     public CommonResult register(@RequestBody @Valid UserRegisterParam userRegisterParam) {
         if (!NumberUtil.isPhone(userRegisterParam.getLoginName())) {
@@ -91,7 +92,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping("update")
     @ApiOperation(value = "修改用户信息", notes = "")
     public CommonResult update(@RequestBody @ApiParam(value = "用户信息")UserUpdateParam userUpdateParam, @TokenToMallUser UserToken userToken) {
         User user = userService.getById(userToken.getUserId());
@@ -109,7 +110,8 @@ public class UserController {
         return CommonResult.failure();
     }
 
-    @GetMapping(value = "/getDetailByToken")
+    @GetMapping(value = "getDetailByToken")
+    @ApiOperation(value = "根据token获取用户信息")
     public CommonResult getUserByToken(@RequestParam("token") String token) {
         ValueOperations<String, UserToken> ops = redisTemplate.opsForValue();
         UserToken userToken = ops.get(token);

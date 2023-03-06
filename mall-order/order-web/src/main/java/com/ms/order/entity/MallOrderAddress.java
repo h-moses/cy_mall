@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @TableName(value = "tb_newbee_mall_order_address")
 public class MallOrderAddress {
+
     private Long orderId;
 
     private String userName;

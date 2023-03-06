@@ -1,12 +1,14 @@
 package com.ms.user.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-@TableName(value = "tb_newbee_mall_admin_user")
+@TableName(value = "mall_admin_user")
 public class Admin {
 
+    @TableId
     private Long adminUserId;
 
     private String loginUserName;

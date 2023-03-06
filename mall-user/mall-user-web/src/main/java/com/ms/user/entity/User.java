@@ -1,5 +1,7 @@
 package com.ms.user.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -7,8 +9,9 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName(value = "tb_newbee_mall_user")
+@TableName(value = "mall_user")
 public class User {
+    @TableId
     private Long userId;
 
     private String nickName;
@@ -19,6 +22,7 @@ public class User {
 
     private String introduceSign;
 
+    @TableLogic
     private Byte isDeleted;
 
     private Byte lockedFlag;

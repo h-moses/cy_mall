@@ -1,5 +1,7 @@
 package com.ms.order.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -9,6 +11,7 @@ import java.util.Date;
 @Data
 @TableName(value = "tb_newbee_mall_order")
 public class MallOrder {
+    @TableId
     private Long orderId;
 
     private String orderNo;
@@ -27,6 +30,7 @@ public class MallOrder {
 
     private String extraInfo;
 
+    @TableLogic
     private Byte isDeleted;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

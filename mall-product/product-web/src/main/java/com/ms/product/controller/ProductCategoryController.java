@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@Api(tags = "新蜂商城分类页面接口")
+@Api(tags = "商城分类页面接口")
 @RequestMapping("/categories/mall")
 public class ProductCategoryController {
 

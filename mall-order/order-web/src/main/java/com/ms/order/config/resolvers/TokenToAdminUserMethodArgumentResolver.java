@@ -4,8 +4,8 @@ import com.ms.common.annotation.TokenToAdminUser;
 import com.ms.common.api.CommonResult;
 import com.ms.common.enums.ServiceResultEnum;
 import com.ms.common.exception.MallException;
-import com.ms.product.config.entity.Admin;
-import com.ms.product.entity.LoginAdminUser;
+import com.ms.order.config.entity.Admin;
+import com.ms.order.entity.LoginAdmin;
 import com.ms.user.api.UserServiceFeign;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -44,7 +44,7 @@ public class TokenToAdminUserMethodArgumentResolver implements HandlerMethodArgu
                 }
                 Admin data = (Admin) adminUserByToken.getData();
 
-                LoginAdminUser loginAdminUser = new LoginAdminUser();
+                LoginAdmin loginAdminUser = new LoginAdmin();
                 loginAdminUser.setAdminUserId(data.getAdminUserId());
                 loginAdminUser.setLoginUserName(data.getLoginUserName());
                 loginAdminUser.setNickName(data.getNickName());

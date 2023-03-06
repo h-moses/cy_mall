@@ -11,14 +11,19 @@ import com.ms.order.entity.MallOrder;
 import com.ms.order.entity.MallUserAddress;
 import com.ms.order.service.MallOrderService;
 import com.ms.order.service.MallUserAddressService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 
 @RestController
+@Slf4j
+@Api(tags = "商城订单管理接口")
+@RequestMapping("/order/mall")
 public class MallOrderController {
 
     @Resource

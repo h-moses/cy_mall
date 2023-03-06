@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 @RestController
 @Api(tags = "后台管理系统订单模块接口")
-@RequestMapping("/orders/admin")
+@RequestMapping("/order/admin")
 public class AdminOrderController {
     private static final Logger logger = LoggerFactory.getLogger(AdminOrderController.class);
 

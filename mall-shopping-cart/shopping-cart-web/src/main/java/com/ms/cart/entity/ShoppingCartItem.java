@@ -1,5 +1,6 @@
 package com.ms.cart.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
@@ -7,6 +8,7 @@ import java.util.Date;
 
 @Data
 public class ShoppingCartItem {
+    @TableId
     private Long cartItemId;
 
     private Long userId;

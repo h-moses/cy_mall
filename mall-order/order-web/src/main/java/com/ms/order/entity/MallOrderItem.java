@@ -1,5 +1,6 @@
 package com.ms.order.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ import java.util.Date;
 @Data
 @TableName(value = "tb_newbee_mall_order_item")
 public class MallOrderItem {
+    @TableId
     private Long orderItemId;
 
     private Long orderId;
