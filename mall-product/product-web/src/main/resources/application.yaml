@@ -29,3 +29,20 @@ spring:
       matching-strategy: ant_path_matcher
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
+
+seata:
+  enabled: true
+  application-id: mall-shopping-cart-service
+  tx-service-group: save_order_group
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      username: nacos
+      password: nacos
+      group: SEATA_GROUP
+      cluster: default
+  service:
+    vgroupMapping:
+      save_order_group: default

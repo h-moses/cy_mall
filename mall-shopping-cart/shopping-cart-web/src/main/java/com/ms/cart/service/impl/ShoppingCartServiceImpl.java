@@ -10,7 +10,6 @@ import com.ms.cart.service.ShoppingCartService;
 import com.ms.common.api.CommonResult;
 import com.ms.common.enums.ServiceResultEnum;
 import com.ms.common.exception.MallException;
-import com.ms.common.pojo.UserToken;
 import com.ms.common.utils.BeanUtil;
 import com.ms.product.ProductServiceFeign;
 import com.ms.product.dto.ProductDTO;
@@ -48,20 +47,14 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
     }
 
     @Override
-    public String updateItem(UpdateCartItemParam updateCartItemParam, UserToken token) {
+    public String updateItem(UpdateCartItemParam updateCartItemParam, Long userId) {
+//        查询购物车中的商品
         ShoppingCartItem cartItem = getById(updateCartItemParam.getCartItemId());
         if (null == cartItem) {
             return ServiceResultEnum.DATA_NOT_EXIST.getResult();
         }
-        if (!cartItem.getUserId().equals(token.getUserId())) {
-            MallException.fail(ServiceResultEnum.REQUEST_FORBIDDEN_ERROR.getResult());
-        }
-//        超出最大数量
-        if (updateCartItemParam.getGoodsCount() > 5) {
-            return ServiceResultEnum.SHOPPING_CART_ITEM_LIMIT_NUMBER_ERROR.getResult();
-        }
 //        当前登录id和商品的用户id不同
-        if (!cartItem.getUserId().equals(token.getUserId())) {
+        if (!cartItem.getUserId().equals(userId)) {
             return ServiceResultEnum.NO_PERMISSION_ERROR.getResult();
         }
 //        数量相同

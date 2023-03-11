@@ -1,5 +1,6 @@
 package com.ms.user.controller;
 
+import com.alibaba.nacos.common.utils.MD5Utils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ms.common.annotation.TokenToAdminUser;
 import com.ms.common.api.CommonResult;
@@ -36,7 +37,7 @@ public class AdminController {
     @ApiOperation(value = "登录接口", notes = "返回token")
     @PostMapping(value = "login")
     public CommonResult login(@RequestBody @Valid AdminLoginParam adminLoginParam) {
-        Admin admin = adminService.getOne(new QueryWrapper<Admin>().eq("login_user_name", adminLoginParam.getUserName()).eq("login_password", adminLoginParam.getPasswordMD5()).eq("locked", 0));
+        Admin admin = adminService.getOne(new QueryWrapper<Admin>().eq("login_user_name", adminLoginParam.getUserName()).eq("login_password", MD5Utils.md5Hex(adminLoginParam.getPasswordMD5(), "UTF-8")).eq("locked", 0));
         if (null != admin) {
             String token = SystemUtil.genToken(System.currentTimeMillis() + "", admin.getAdminUserId());
             AdminToken adminToken = new AdminToken();

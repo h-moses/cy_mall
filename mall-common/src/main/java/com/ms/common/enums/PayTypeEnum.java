@@ -4,7 +4,7 @@ public enum PayTypeEnum {
     DEFAULT(-1, "ERROR"),
     NOT_PAY(0, "无"),
     ALI_PAY(1, "支付宝"),
-    WEIXIN_PAY(2, "微信支付");
+    wx_PAY(2, "微信支付");
 
     private int payType;
 

@@ -1,6 +1,7 @@
 package com.ms.user.api;
 
 import com.ms.common.api.CommonResult;
+import com.ms.user.api.dto.MallUserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,5 +14,5 @@ public interface UserServiceFeign {
     CommonResult getAdminUserByToken(@PathVariable(value = "token") String token);
 
     @GetMapping(value = "/mall/getDetailByToken")
-    CommonResult getMallUserByToken(@RequestParam(value = "token") String token);
+    CommonResult<MallUserDTO> getMallUserByToken(@RequestParam(value = "token") String token);
 }

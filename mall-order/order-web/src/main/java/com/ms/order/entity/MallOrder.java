@@ -1,5 +1,6 @@
 package com.ms.order.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -11,7 +12,8 @@ import java.util.Date;
 @Data
 @TableName(value = "mall_order")
 public class MallOrder {
-    @TableId
+
+    @TableId(value = "order_id", type = IdType.AUTO)
     private Long orderId;
 
     private String orderNo;

@@ -12,5 +12,4 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "后台管理系统分类模块接口")
 @RequestMapping("/categories/admin")
 public class AdminProductCategoryController {
-    private static final Logger logger = LoggerFactory.getLogger(AdminProductCategoryController.class);
 }

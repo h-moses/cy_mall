@@ -27,8 +27,6 @@ import java.util.List;
 @RequestMapping("/goods/mall")
 public class ProductController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
-
     @Resource
     private ProductService productService;
 
@@ -40,7 +38,7 @@ public class ProductController {
             @RequestParam(required = false) @ApiParam("排序") String orderBy,
             @RequestParam(required = false) @ApiParam("页码") Integer pageNum
     ) {
-        logger.info("goods search api,keyword={},goodsCategoryId={},orderBy={},pageNumber={},userId={}", keyword, prodCateId, orderBy, pageNum);
+        log.info("goods search api,keyword={},goodsCategoryId={},orderBy={},pageNumber={},userId={}", keyword, prodCateId, orderBy, pageNum);
 
         if (null == prodCateId && !StringUtils.hasText(keyword)) {
             return CommonResult.failure("搜索参数异常");
@@ -50,20 +48,16 @@ public class ProductController {
         }
         Page<Product> page = new Page<>(pageNum, 10);
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(StringUtils.hasText(prodCateId.toString()),"goods_category_id", prodCateId);
-        queryWrapper.eq("goods_sell_status", 0);
-        queryWrapper.and(StringUtils.hasText(keyword), wq -> {
-           wq.like("goods_name", keyword)
-                   .or()
-                   .like("goods_intro", keyword);
-        });
-        queryWrapper.and(StringUtils.hasText(orderBy), productQueryWrapper -> {
-            productQueryWrapper.orderByDesc(orderBy.equals("new"), "goods_id")
-                    .or()
-                    .orderByAsc(orderBy.equals("price"), "selling_price")
-                    .or().
-                    orderByDesc("stock_num");
-        });
+        queryWrapper.eq(StringUtils.hasText(prodCateId.toString()),"goods_category_id", prodCateId)
+                .eq("goods_sell_status", 0)
+                .and(StringUtils.hasText(keyword), wq -> {
+                    wq.like("goods_name", keyword)
+                            .or()
+                            .like("goods_intro", keyword);
+        })
+                .orderByAsc("new".equals(orderBy), "goods_id")
+                .orderByAsc("price".equals(orderBy), "selling_price")
+                .orderByAsc("".equals(orderBy), "stock_num");
         Page<Product> productPage = productService.page(page, queryWrapper);
         Page<SearchProductVO> searchProductVOPage = new Page<>();
         if (productPage.getTotal() != 0) {

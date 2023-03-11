@@ -7,6 +7,7 @@ import com.ms.common.exception.MallException;
 import com.ms.common.pojo.UserToken;
 import com.ms.user.api.UserServiceFeign;
 import com.ms.user.api.dto.MallUserDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -15,7 +16,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @Configuration
 public class TokenToMallUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -31,11 +34,13 @@ public class TokenToMallUserMethodArgumentResolver implements HandlerMethodArgum
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         if (parameter.getParameterAnnotation(TokenToMallUser.class) instanceof TokenToMallUser) {
-            String token = webRequest.getHeader("token");
+            String token = webRequest.getParameter("token");
+            log.warn(token);
             if (null != token && !"".equals(token) && token.length() == 32) {
                 CommonResult<MallUserDTO> mallUserByToken = userServiceFeign.getMallUserByToken(token);
+                log.info(mallUserByToken.getData().toString());
                 if (mallUserByToken == null || mallUserByToken.getCode() != 200 || mallUserByToken.getData() == null) {
                     MallException.fail(ServiceResultEnum.TOKEN_EXPIRE_ERROR.getResult());
                 }

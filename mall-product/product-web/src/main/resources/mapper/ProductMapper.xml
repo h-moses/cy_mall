@@ -5,8 +5,8 @@
 <mapper namespace="com.ms.product.mapper.ProductMapper">
     <update id="updateStock">
         <foreach collection="stocks" item="stockDTO">
-            update tb_newbee_mall_goods_info set stock_num-#{stockDTO.goodsCount}
-            where goods_id = #{stockDTO.goodsId} and stock_num >= #{stockDTO.goodsCount} and goods_sell_status=0;
+            update mall_goods_info set stock_num=stock_num-#{stockDTO.goodsCount}
+            where goods_id=#{stockDTO.goodsId} and stock_num>=#{stockDTO.goodsCount} and goods_sell_status=0;
         </foreach>
     </update>
 </mapper>

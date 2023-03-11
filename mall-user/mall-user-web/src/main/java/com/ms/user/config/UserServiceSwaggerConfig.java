@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class UserServiceSwaggerConfig {
 
 
-    @Bean(value = "dockerBean")
+    @Bean()
     public Docket dockerBean() {
         ParameterBuilder builder = new ParameterBuilder();
         List<Parameter> parameters = new ArrayList<>();

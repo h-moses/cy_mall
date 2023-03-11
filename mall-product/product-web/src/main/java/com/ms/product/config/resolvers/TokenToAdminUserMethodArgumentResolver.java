@@ -15,6 +15,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.annotation.Resource;
+import java.util.LinkedHashMap;
 
 @Component
 public class TokenToAdminUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
@@ -36,19 +37,19 @@ public class TokenToAdminUserMethodArgumentResolver implements HandlerMethodArgu
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         if (parameter.getParameterAnnotation(TokenToAdminUser.class) instanceof TokenToAdminUser) {
-            String token = webRequest.getHeader("token");
+            String token = webRequest.getParameter("token");
             if (null != token && !"".equals(token) && token.length() == 32) {
                 CommonResult adminUserByToken = userServiceFeign.getAdminUserByToken(token);
                 if (null == adminUserByToken || adminUserByToken.getCode() != 200 || adminUserByToken.getData() == null) {
                     MallException.fail(ServiceResultEnum.ADMIN_NOT_LOGIN_ERROR.getResult());
                 }
-                Admin data = (Admin) adminUserByToken.getData();
+                LinkedHashMap data = (LinkedHashMap) adminUserByToken.getData();
 
                 LoginAdminUser loginAdminUser = new LoginAdminUser();
-                loginAdminUser.setAdminUserId(data.getAdminUserId());
-                loginAdminUser.setLoginUserName(data.getLoginUserName());
-                loginAdminUser.setNickName(data.getNickName());
-                loginAdminUser.setLocked(data.getLocked());
+                loginAdminUser.setAdminUserId(Long.valueOf(data.get("adminUserId").toString()));
+                loginAdminUser.setLoginUserName((String) data.get("loginUserName"));
+                loginAdminUser.setNickName((String) data.get("nickName"));
+                loginAdminUser.setLocked(Byte.valueOf(data.get("locked").toString()));
                 return loginAdminUser;
             } else {
                 MallException.fail(ServiceResultEnum.ADMIN_NOT_LOGIN_ERROR.getResult());

@@ -20,14 +20,24 @@ spring:
         server-addr: 127.0.0.1:8848
       username: nacos
       password: nacos
-    sentinel:
-      transport:
-        dashboard: 127.0.0.1:8858
-        port: 8719
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-mybatis-plus:
-  mapper-locations: classpath*:/mapper/**/*.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+seata:
+  enabled: true
+  application-id: mall-order-service
+  tx-service-group: save_order_group
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      username: nacos
+      password: nacos
+      group: SEATA_GROUP
+      cluster: default
+  service:
+    vgroupMapping:
+      save_order_group: default

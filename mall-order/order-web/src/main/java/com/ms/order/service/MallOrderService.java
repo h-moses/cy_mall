@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ms.order.controller.vo.MallOrderDetailVO;
 import com.ms.order.controller.vo.MallOrderListVO;
 import com.ms.order.entity.MallOrder;
+import com.ms.order.entity.MallUserAddress;
 
+import java.util.List;
 import java.util.Map;
 
 public interface MallOrderService extends IService<MallOrder> {
@@ -27,4 +29,6 @@ public interface MallOrderService extends IService<MallOrder> {
     String checkout(Long[] ids);
 
     String closeOrder(Long[] ids);
+
+    String saveOrder(Long userId, MallUserAddress address, List<Long> cartItemIds);
 }

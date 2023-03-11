@@ -8,6 +8,9 @@ import java.io.Serializable;
 
 @Data
 public class UserLoginParam implements Serializable {
+
+    private static final long serialVersionUID = 42L;
+
     @ApiModelProperty("登录名")
     @NotEmpty(message = "登录名不能为空")
     private String loginName;

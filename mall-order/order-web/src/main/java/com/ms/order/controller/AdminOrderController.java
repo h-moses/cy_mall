@@ -5,10 +5,10 @@ import com.ms.common.annotation.TokenToAdminUser;
 import com.ms.common.api.CommonResult;
 import com.ms.common.enums.ServiceResultEnum;
 import com.ms.common.pojo.AdminToken;
-import com.ms.order.config.entity.Admin;
 import com.ms.order.controller.param.BatchIdParam;
 import com.ms.order.controller.vo.MallOrderDetailVO;
 import com.ms.order.controller.vo.MallOrderListVO;
+import com.ms.order.entity.LoginAdmin;
 import com.ms.order.entity.MallOrder;
 import com.ms.order.service.MallOrderService;
 import io.swagger.annotations.Api;
@@ -36,27 +36,28 @@ public class AdminOrderController {
                              @RequestParam(required = false) @ApiParam(value = "每页条数") Integer pageSize,
                              @RequestParam(required = false) @ApiParam(value = "订单号") String orderNo,
                              @RequestParam(required = false) @ApiParam(value = "订单状态") Integer orderStatus,
-                             @TokenToAdminUser AdminToken adminToken) {
+                             @TokenToAdminUser LoginAdmin adminUser) {
         if (pageNum ==null || pageNum < 1 || pageSize == null || pageSize < 10) {
-            return CommonResult.failure("分页参数错误");
+            pageNum = 1;
+            pageSize = 10;
         }
         Page<MallOrder> mallOrderPage = new Page<>(pageNum, pageSize);
-        HashMap<Object, Object> map = new HashMap<>(8);
+        HashMap<String, String> map = new HashMap<>(8);
         map.put("orderNo", orderNo);
-        map.put("orderStatus", orderStatus);
+        map.put("orderStatus", orderStatus.toString());
         Page<MallOrderListVO> orderList = mallOrderService.getOrderList(mallOrderPage, map);
         return CommonResult.success(orderList);
     }
 
     @GetMapping("/detail/{orderId}")
     @ApiOperation(value = "订单详情接口", notes = "传参为订单号")
-    public CommonResult<MallOrderDetailVO> orderDetailPage(@ApiParam(value = "订单号") @PathVariable("orderId") Long orderId, @TokenToAdminUser AdminToken adminUser) {
+    public CommonResult<MallOrderDetailVO> orderDetailPage(@ApiParam(value = "订单号") @PathVariable("orderId") Long orderId, @TokenToAdminUser LoginAdmin adminUser) {
         return CommonResult.success(mallOrderService.getOrderById(orderId));
     }
 
     @PutMapping("/checkDone")
     @ApiOperation(value = "修改订单状态为配货成功", notes = "批量修改")
-    public CommonResult checkDone(@RequestBody BatchIdParam batchIdParam, @TokenToAdminUser AdminToken adminToken) {
+    public CommonResult checkDone(@RequestBody BatchIdParam batchIdParam, @TokenToAdminUser LoginAdmin adminUser) {
         if (null == batchIdParam || batchIdParam.getIds().length < 1) {
             return CommonResult.failure("参数异常");
         }
@@ -70,7 +71,7 @@ public class AdminOrderController {
 
     @PutMapping(value = "/checkOut")
     @ApiOperation(value = "修改订单状态为已出库", notes = "批量修改")
-    public CommonResult checkout(@RequestBody BatchIdParam batchIdParam, @TokenToAdminUser AdminToken adminToken) {
+    public CommonResult checkout(@RequestBody BatchIdParam batchIdParam, @TokenToAdminUser LoginAdmin adminUser) {
         if (null == batchIdParam || batchIdParam.getIds().length < 1) {
             return CommonResult.failure("参数异常");
         }
@@ -84,7 +85,7 @@ public class AdminOrderController {
 
     @PutMapping(value = "/close")
     @ApiOperation(value = "修改订单状态为商家关闭", notes = "批量修改")
-    public CommonResult closeOrder(@RequestBody BatchIdParam batchIdParam, @TokenToAdminUser AdminToken adminToken) {
+    public CommonResult closeOrder(@RequestBody BatchIdParam batchIdParam, @TokenToAdminUser LoginAdmin adminUser) {
         if (batchIdParam == null || batchIdParam.getIds().length < 1) {
             return CommonResult.failure("参数异常");
         }

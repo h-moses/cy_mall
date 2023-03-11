@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ms.common.annotation.TokenToMallUser;
 import com.ms.common.api.CommonResult;
 import com.ms.common.enums.ServiceResultEnum;
+import com.ms.common.exception.MallException;
 import com.ms.common.pojo.UserToken;
 import com.ms.common.utils.BeanUtil;
 import com.ms.order.controller.param.UpdateUserAddressParam;
@@ -83,8 +84,7 @@ public class UserAddressController {
     public CommonResult getDefaultAddress(@TokenToMallUser UserToken userToken) {
         QueryWrapper<MallUserAddress> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id", userToken.getUserId())
-                .eq("default_flag", 1)
-                .eq("is_deleted", 0);
+                .eq("default_flag", 1);
         MallUserAddress one = addressService.getOne(wrapper);
         return CommonResult.success(one);
     }
@@ -94,6 +94,9 @@ public class UserAddressController {
     public CommonResult deleteAddress(@PathVariable("addressId") Long addressId,
                                       @TokenToMallUser UserToken userToken) {
         MallUserAddress address = addressService.getById(addressId);
+        if (null == address) {
+            return CommonResult.failure(ServiceResultEnum.NULL_ADDRESS_ERROR.getResult());
+        }
         if (!address.getUserId().equals(userToken.getUserId())) {
             return CommonResult.failure(ServiceResultEnum.REQUEST_FORBIDDEN_ERROR.getResult());
         }

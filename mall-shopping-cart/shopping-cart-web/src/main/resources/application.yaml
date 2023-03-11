@@ -10,14 +10,35 @@ spring:
         server-addr: 127.0.0.1:8848
       username: nacos
       password: nacos
-    sentinel:
-      transport:
-        dashboard: 127.0.0.1:8855
-        port: 8719
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/newbee_mall_cloud_cart_db?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf8&autoReconnect=true&useSSL=false&allowMultiQueries=true
     username: root
     password: 802324
-
-
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    timeout: 5000
+    jedis:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
+        max-wait: -1ms
+seata:
+  enabled: true
+  application-id: mall-shopping-cart-service
+  tx-service-group: save_order_group
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      username: nacos
+      password: nacos
+      group: SEATA_GROUP
+      cluster: default
+  service:
+    vgroup-mapping:
+      save_order_group: default

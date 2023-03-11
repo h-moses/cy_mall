@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ms.common.annotation.TokenToMallUser;
 import com.ms.common.api.CommonResult;
 import com.ms.common.enums.ServiceResultEnum;
+import com.ms.common.exception.MallException;
 import com.ms.common.pojo.UserToken;
 import com.ms.common.utils.NumberUtil;
 import com.ms.common.utils.SystemUtil;
@@ -43,9 +44,10 @@ public class UserController {
         if (!NumberUtil.isPhone(userLoginParam.getLoginName())) {
             return CommonResult.failure(ServiceResultEnum.LOGIN_NAME_IS_NOT_PHONE.getResult());
         }
-        User user = userService.getOne(new QueryWrapper<User>().eq("login_name", userLoginParam.getLoginName()).eq("password_md5", userLoginParam.getPasswordMd5()));
+        log.info("login：", MD5Utils.md5Hex(userLoginParam.getPasswordMd5(), "UTF-8"));
+        User user = userService.getOne(new QueryWrapper<User>().eq("login_name", userLoginParam.getLoginName()).eq("password_md5", MD5Utils.md5Hex(userLoginParam.getPasswordMd5(), "UTF-8")));
         if (null != user) {
-            if (user.getLockedFlag() == 1) {
+            if (user.getLockedFlag().intValue() == 1) {
                 return CommonResult.failure(ServiceResultEnum.LOGIN_USER_LOCKED_ERROR.getResult());
             }
             String token = SystemUtil.genToken(System.currentTimeMillis() + "", user.getUserId());
@@ -55,6 +57,8 @@ public class UserController {
             ValueOperations<String, UserToken> ops = redisTemplate.opsForValue();
             ops.set(token, userToken, 7 * 24 * 60 * 60, TimeUnit.SECONDS);
             return CommonResult.success(userToken);
+        } else {
+            MallException.fail(ServiceResultEnum.USER_NULL_ERROR.getResult());
         }
 
         return CommonResult.failure("登录失败");
@@ -77,7 +81,7 @@ public class UserController {
         if (!NumberUtil.isPhone(userRegisterParam.getLoginName())) {
             return CommonResult.failure(ServiceResultEnum.LOGIN_NAME_IS_NOT_PHONE.getResult());
         }
-        User user = userService.getOne(new QueryWrapper<User>().eq("login_name", userRegisterParam.getLoginName()).eq("is_deleted", 0));
+        User user = userService.getOne(new QueryWrapper<User>().eq("login_name", userRegisterParam.getLoginName()));
         if (null != user) {
             return CommonResult.failure(ServiceResultEnum.SAME_LOGIN_NAME_EXIST.getResult());
         }

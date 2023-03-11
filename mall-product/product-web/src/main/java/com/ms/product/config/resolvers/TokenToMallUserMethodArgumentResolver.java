@@ -33,7 +33,7 @@ public class TokenToMallUserMethodArgumentResolver implements HandlerMethodArgum
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         if (parameter.getParameterAnnotation(TokenToMallUser.class) instanceof TokenToMallUser) {
-            String token = webRequest.getHeader("token");
+            String token = webRequest.getParameter("token");
             if (null != token && !"".equals(token) && token.length() == 32) {
                 CommonResult result = userServiceFeign.getMallUserByToken(token);
                 if (result == null || result.getCode() != 200 || result.getData() == null) {

@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.HashMap;
 
 @RestController
@@ -48,8 +49,8 @@ public class MallOrderController {
         if (!userToken.getUserId().equals(address.getUserId())) {
             return CommonResult.failure(ServiceResultEnum.REQUEST_FORBIDDEN_ERROR.getResult());
         }
-//        mallOrderService.save();
-        return null;
+        String order = mallOrderService.saveOrder(userToken.getUserId(), address, Arrays.asList(saveOrderParam.getCartItemIds()));
+        return CommonResult.success(order);
     }
 
     @GetMapping("/order/{orderNo}")
@@ -67,9 +68,9 @@ public class MallOrderController {
             pageNum = 1;
         }
         Page<MallOrder> page = new Page<>(pageNum, 5);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("userId", userToken.getUserId());
-        map.put("orderStatus", status);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("userId", userToken.getUserId().toString());
+        map.put("orderStatus", status.toString());
         Page<MallOrderListVO> orderList = mallOrderService.getOrderList(page, map);
         return CommonResult.success(orderList);
     }

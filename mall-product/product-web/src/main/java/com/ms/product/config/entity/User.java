@@ -1,5 +1,6 @@
 package com.ms.product.config.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -7,8 +8,9 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName(value = "tb_newbee_mall_user")
+@TableName(value = "mall_user")
 public class User {
+    @TableId
     private Long userId;
 
     private String nickName;
