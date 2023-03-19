@@ -20,7 +20,11 @@ spring:
         server-addr: 127.0.0.1:8848
       username: nacos
       password: nacos
-
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 127.0.0.1:8855
+        clientIp: 127.0.0.1
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

@@ -43,7 +43,7 @@
 
         <dependency>
             <groupId>com.ms</groupId>
-            <artifactId>mall-user-api</artifactId>
+            <artifactId>user-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -8,7 +8,7 @@
         <module>mall-order</module>
         <module>mall-user</module>
         <module>mall-common</module>
-        <module>mall-shopping-cart</module>
+        <module>mall-cart</module>
         <module>gateway-mall</module>
     </modules>
     <parent>
