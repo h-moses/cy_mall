@@ -13,8 +13,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,10 +33,8 @@ public class ProductController {
     public CommonResult<Page<SearchProductVO>> search(
             @RequestParam(required = false) @ApiParam("搜索关键字") String keyword,
             @RequestParam(required = false) @ApiParam("分类ID") Long prodCateId,
-            @RequestParam(required = false) @ApiParam("排序") String orderBy,
             @RequestParam(required = false) @ApiParam("页码") Integer pageNum
     ) {
-        log.info("goods search api,keyword={},goodsCategoryId={},orderBy={},pageNumber={},userId={}", keyword, prodCateId, orderBy, pageNum);
 
         if (null == prodCateId && !StringUtils.hasText(keyword)) {
             return CommonResult.failure("搜索参数异常");
@@ -46,19 +42,20 @@ public class ProductController {
         if (null == pageNum || pageNum < 1) {
             pageNum = 1;
         }
+//        默认每页10个
         Page<Product> page = new Page<>(pageNum, 10);
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+//        建立条件查询
         queryWrapper.eq(StringUtils.hasText(prodCateId.toString()),"goods_category_id", prodCateId)
                 .eq("goods_sell_status", 0)
                 .and(StringUtils.hasText(keyword), wq -> {
                     wq.like("goods_name", keyword)
                             .or()
                             .like("goods_intro", keyword);
-        })
-                .orderByAsc("new".equals(orderBy), "goods_id")
-                .orderByAsc("price".equals(orderBy), "selling_price")
-                .orderByAsc("".equals(orderBy), "stock_num");
+        });
+//        分页查询
         Page<Product> productPage = productService.page(page, queryWrapper);
+//        转换为商品的视图对象
         Page<SearchProductVO> searchProductVOPage = new Page<>();
         if (productPage.getTotal() != 0) {
             List<SearchProductVO> searchProductVOS = BeanUtil.copyList(productPage.getRecords(), SearchProductVO.class);
@@ -88,6 +85,7 @@ public class ProductController {
             return CommonResult.failure("商品ID异常");
         }
         Product product = productService.getById(goodsId);
+//        商品为空,或者商品已下架
         if (null == product || 0 != product.getGoodsSellStatus()) {
             return CommonResult.failure(ServiceResultEnum.GOODS_PUT_DOWN.getResult());
         }

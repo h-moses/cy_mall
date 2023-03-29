@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ms.common.annotation.TokenToAdminUser;
 import com.ms.common.api.CommonResult;
 import com.ms.common.enums.ServiceResultEnum;
-import com.ms.common.pojo.AdminToken;
 import com.ms.order.controller.param.BatchIdParam;
 import com.ms.order.controller.vo.MallOrderDetailVO;
 import com.ms.order.controller.vo.MallOrderListVO;

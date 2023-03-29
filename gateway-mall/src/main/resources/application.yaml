@@ -1,8 +1,6 @@
 server:
   port: 9050
 spring:
-  main:
-    web-application-type: reactive
   application:
     name: mall-gateway-service
   cloud:
@@ -10,7 +8,11 @@ spring:
       server-addr: 127.0.0.1:8848
       username: nacos
       password: nacos
-
+    sentinel:
+      transport:
+        clientIp: 127.0.0.1
+        port: 8719
+        dashboard: 127.0.0.1:8855
     gateway:
       enabled: true
       discovery:
@@ -32,8 +34,8 @@ spring:
           order: 1
           predicates:
             - Path=/categories/mall/**
-        - id: shopping-cart-service-route
-          uri: lb://mall-shopping-cart-service
+        - id: cart-service-route
+          uri: lb://mall-cart-service
           order: 1
           predicates:
             - Path=/shop-cart/**
@@ -43,14 +45,17 @@ spring:
           predicates:
             - Path=/order/mall/**
             - Path=/mall/address/**
+        - id: order-service-route2
+          uri: lb://mall-order-service
+          order: 1
+          predicates:
+            - Path=/mall/address/**
   redis:
     database: 13
     host: 127.0.0.1
     port: 6379
-    password: 802324
     lettuce:
       pool:
-        enabled: true
         max-wait: -1ms
         max-active: 8
         max-idle: 8

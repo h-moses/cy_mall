@@ -74,6 +74,10 @@ public enum ServiceResultEnum {
 
     ORDER_STATUS_ERROR("订单状态异常！"),
 
+    ORDER_SUCCESS_SAVE("已成功下单！"),
+
+    ORDER_SUCCESS_CANCEL("订单成功取消！"),
+
     OPERATE_ERROR("操作失败！"),
 
     REQUEST_FORBIDDEN_ERROR("禁止该操作！"),

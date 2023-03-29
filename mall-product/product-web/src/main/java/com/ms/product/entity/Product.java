@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 @TableName(value = "mall_goods_info")
 public class Product {
+
     @TableId(value = "goods_id")
     private Long goodsId;
 

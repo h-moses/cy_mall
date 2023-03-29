@@ -34,7 +34,4 @@ public abstract class BeanUtil {
         return targetList;
     }
 
-    public static interface Callback<T>{
-        void set(Object source, T target);
-    }
 }

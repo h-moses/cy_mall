@@ -1,4 +1,4 @@
-package com.ms.cart;
+package com.ms.cart.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import io.seata.rm.datasource.DataSourceProxy;

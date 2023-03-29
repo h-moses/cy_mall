@@ -6,6 +6,7 @@ import com.ms.common.enums.ServiceResultEnum;
 import com.ms.common.exception.MallException;
 import com.ms.order.entity.LoginAdmin;
 import com.ms.user.api.UserServiceFeign;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 
 @Component
+@Slf4j
 public class TokenToAdminUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Resource
@@ -36,7 +38,8 @@ public class TokenToAdminUserMethodArgumentResolver implements HandlerMethodArgu
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         if (parameter.getParameterAnnotation(TokenToAdminUser.class) instanceof TokenToAdminUser) {
-            String token = webRequest.getParameter("token");
+            String token = webRequest.getHeader("token");
+            log.info("token: " + token);
             if (null != token && !"".equals(token) && token.length() == 32) {
                 CommonResult adminUserByToken = userServiceFeign.getAdminUserByToken(token);
                 if (null == adminUserByToken || adminUserByToken.getCode() != 200 || adminUserByToken.getData() == null) {

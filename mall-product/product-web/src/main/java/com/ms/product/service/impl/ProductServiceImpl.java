@@ -23,15 +23,22 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Resource
     private CategoryMapper categoryMapper;
 
+    /**
+     * 添加商品服务
+     */
     @Override
     public String saveProduct(Product product) {
+//        查询该商品所属的类别
         ProductCategory productCategory = categoryMapper.selectById(product.getGoodsCategoryId());
+//        不存在,或不是三级类别,报错
         if (null == productCategory || productCategory.getCategoryLevel().intValue() != CategoryLevelEnum.LEVEL_THREE.getLevel()) {
             return ServiceResultEnum.GOODS_CATEGORY_ERROR.getResult();
         }
+//        查询是否存在同名商品
         if (getBaseMapper().selectCount(new QueryWrapper<Product>().eq("goods_name", product.getGoodsName()).eq("goods_category_id", product.getGoodsCategoryId())) == 0) {
             return ServiceResultEnum.SAME_GOODS_EXIST.getResult();
         }
+//        添加商品到数据库
         if (save(product)) {
             return ServiceResultEnum.SUCCESS.getResult();
         } else {
@@ -39,9 +46,14 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
     }
 
+    /**
+     * 更新商品信息
+     */
     @Override
     public String updateProduct(Product product) {
+//        查询该商品所属的类别
         ProductCategory productCategory = categoryMapper.selectById(product.getGoodsCategoryId());
+//        不存在,或不是三级类别,报错
         if (null == productCategory || productCategory.getCategoryLevel().intValue() == CategoryLevelEnum.LEVEL_ONE.getLevel()) {
             return ServiceResultEnum.GOODS_CATEGORY_ERROR.getResult();
         }
@@ -50,12 +62,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         if (null == tem) {
             return ServiceResultEnum.DATA_NOT_EXIST.getResult();
         }
-//        QueryWrapper<Product> wrapper = new QueryWrapper<Product>().eq("goods_name", product.getGoodsName()).eq("goods_category_id", product.getGoodsCategoryId());
-//        List<Product> list = list(wrapper);
-////        存在同样的商品，但是ID不一致
-//        if (list != null && list.size() > 1) {
-//            return ServiceResultEnum.SAME_GOODS_EXIST.getResult();
-//        }
 //        更新信息
         product.setUpdateTime(new Date());
         boolean b = updateById(product);
@@ -66,6 +72,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
     }
 
+    /**
+     * 批量更新商品的售卖状态
+     */
     @Override
     public boolean updateStatus(Long[] ids, int status) {
         UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
@@ -74,10 +83,20 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         return update(null, updateWrapper);
     }
 
+    /**
+     * 更新商品库存
+     * 若是取消订单,则增加商品库存
+     * 否则,减少商品库存
+     */
     @Override
-    public int updateStock(List<StockNumDTO> stocks) {
-//        用原有库存减去输入的数量
-        int i = getBaseMapper().updateStock(stocks);
-        return i;
+    public int updateStock(List<StockNumDTO> stocks, boolean isCancel) {
+        int res = 0;
+        if (isCancel) {
+            res = getBaseMapper().increaseStock(stocks);
+        } else {
+            //        用原有库存减去输入的数量
+            res = getBaseMapper().updateStock(stocks);
+        }
+        return res;
     }
 }

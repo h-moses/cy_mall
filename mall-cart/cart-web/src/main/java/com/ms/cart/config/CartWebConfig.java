@@ -14,8 +14,6 @@ import java.util.List;
 @Configuration
 public class CartWebConfig implements WebMvcConfigurer {
 
-    private static final Logger log = LoggerFactory.getLogger(CartWebConfig.class);
-
 
     @Lazy
     @Resource

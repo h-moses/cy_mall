@@ -21,5 +21,9 @@ public interface ProductServiceFeign {
     CommonResult<List<ProductDTO>> listByGoodsIds(@RequestParam(value = "goodsIds") List<Long> goodsIds);
 
     @PutMapping(value = "/admin/updateStock")
-    CommonResult<Boolean> updateStock(@RequestBody UpdateStockNumDTO updateStockNumDTO);
+    CommonResult updateStock(@RequestBody UpdateStockNumDTO updateStockNumDTO);
+
+
+    @PutMapping(value = "/admin/recoverStock")
+    CommonResult recoverStock(@RequestBody UpdateStockNumDTO updateStockNumDTO);
 }

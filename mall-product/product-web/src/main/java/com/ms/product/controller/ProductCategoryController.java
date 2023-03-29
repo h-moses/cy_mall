@@ -23,8 +23,6 @@ import java.util.List;
 @RequestMapping("/categories/mall")
 public class ProductCategoryController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductCategoryController.class);
-
     @Resource
     private CategoryService categoryService;
 

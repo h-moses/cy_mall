@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: mall-shopping-cart-service
+    name: mall-cart-service
   cloud:
     nacos:
       discovery:
@@ -28,7 +28,7 @@ spring:
         max-wait: -1ms
 seata:
   enabled: true
-  application-id: mall-shopping-cart-service
+  application-id: mall-cart-service
   tx-service-group: save_order_group
   registry:
     type: nacos

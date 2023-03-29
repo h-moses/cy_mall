@@ -36,16 +36,20 @@ public class MallOrderController {
     @PostMapping("/saveOrder")
     @ApiOperation(value = "生成订单接口", notes = "传参为地址id和待结算的购物项id数组")
     public CommonResult prodOrder(@ApiParam(value = "订单参数") @RequestBody SaveOrderParam saveOrderParam, @TokenToMallUser UserToken userToken) {
+//        检查参数对象是否存在问题
         if (null == saveOrderParam || null == saveOrderParam.getAddressId() || null == saveOrderParam.getCartItemIds()) {
             return CommonResult.failure(ServiceResultEnum.PARAM_ERROR.getResult());
         }
+//        检查购物项是否为空
         if (saveOrderParam.getCartItemIds().length < 1) {
             return CommonResult.failure(ServiceResultEnum.PARAM_ERROR.getResult());
         }
+//        检查用户地址是否存在
         MallUserAddress address = userAddressService.getById(saveOrderParam.getAddressId());
         if (null == address) {
             return CommonResult.failure(ServiceResultEnum.DATA_NOT_EXIST.getResult());
         }
+//        检查用户ID是否一致
         if (!userToken.getUserId().equals(address.getUserId())) {
             return CommonResult.failure(ServiceResultEnum.REQUEST_FORBIDDEN_ERROR.getResult());
         }

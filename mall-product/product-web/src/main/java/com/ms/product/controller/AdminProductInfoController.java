@@ -14,6 +14,7 @@ import com.ms.product.entity.Product;
 import com.ms.product.entity.UpdateStockNumDTO;
 import com.ms.product.service.CategoryService;
 import com.ms.product.service.ProductService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -38,6 +39,9 @@ public class AdminProductInfoController {
     private CategoryService categoryService;
 
 
+    /**
+     * 管理系统查询商品列表
+     */
     @GetMapping("/list")
     @ApiOperation(value = "商品列表", notes = "可根据名称和上架状态筛选")
     public CommonResult list(
@@ -46,19 +50,24 @@ public class AdminProductInfoController {
             @RequestParam(required = false) @ApiParam(value = "商品名称") String productName,
             @RequestParam(required = false) @ApiParam(value = "上架状态 0-上架 1-下架") Integer status
     ) {
-        if (null == pageNum || pageNum < 1 || null == pageSize || pageSize < 10) {
+        if (null == pageNum || pageNum < 1) {
             pageNum = 1;
+        }
+        if (null == pageSize || pageSize < 10) {
             pageSize = 10;
         }
 
         QueryWrapper<Product> productQueryWrapper = new QueryWrapper<>();
         productQueryWrapper.like(StringUtils.hasText(productName),"goods_name", productName)
                 .eq(StringUtils.hasText(String.valueOf(status)),"goods_sell_status", status)
-                .orderByDesc("goods_id");
+                .orderByAsc("goods_id");
         Page<Product> productPage = productService.page(new Page<>(pageNum, pageSize), productQueryWrapper);
         return CommonResult.success(productPage);
     }
 
+    /**
+     * 后台添加商品
+     */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ApiOperation(value = "新增商品信息", notes = "新增商品信息")
     public CommonResult save(@RequestBody @Valid ProductAddParam productAddParam) {
@@ -72,6 +81,9 @@ public class AdminProductInfoController {
         }
     }
 
+    /**
+     * 后台修改商品信息
+     */
     @PutMapping(value = "/update")
     @ApiOperation(value = "修改商品信息", notes = "修改商品信息")
     public CommonResult update(@RequestBody @Valid ProductEditParam productEditParam) {
@@ -85,6 +97,9 @@ public class AdminProductInfoController {
         }
     }
 
+    /**
+     * 后台批量修改商品的售卖状态
+     */
     @PutMapping(value = "/updateStatus/{sellStatus}")
     @ApiOperation(value = "批量修改销售状态", notes = "批量修改销售状态")
     public CommonResult updateStatus(@RequestBody BatchIdParam batchIdParam, @PathVariable("sellStatus") int status) {
@@ -117,8 +132,19 @@ public class AdminProductInfoController {
 
     @PutMapping("/updateStock")
     @ApiOperation(value = "修改库存")
-    public CommonResult updateStock(@RequestBody UpdateStockNumDTO updateStockNumDTO, @TokenToAdminUser LoginAdminUser adminUser) {
-        int i = productService.updateStock(updateStockNumDTO.getStockNumDTOS());
+    public CommonResult updateStock(@RequestBody UpdateStockNumDTO updateStockNumDTO) {
+        int i = productService.updateStock(updateStockNumDTO.getStockNumDTOS(), false);
+        if (i > 0) {
+            return CommonResult.success(i);
+        } else {
+            return CommonResult.failure("修改失败");
+        }
+    }
+
+    @PutMapping("/recoverStock")
+    @ApiOperation(value = "恢复库存")
+    public CommonResult recoverStock(@RequestBody UpdateStockNumDTO updateStockNumDTO) {
+        int i = productService.updateStock(updateStockNumDTO.getStockNumDTOS(), true);
         if (i > 0) {
             return CommonResult.success(i);
         } else {

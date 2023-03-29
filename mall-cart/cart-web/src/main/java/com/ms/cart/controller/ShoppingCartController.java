@@ -28,6 +28,9 @@ public class ShoppingCartController {
     @Resource
     private ShoppingCartService shoppingCartService;
 
+    /**
+     * 查询特定用户的购物车列表
+     */
     @GetMapping("/shop-cart/page")
     @ApiOperation(value = "购物车列表(每页默认5条)", notes = "传参为页码")
     public CommonResult cartItemPageList(@RequestParam("pageNum") Integer pageNum, @TokenToMallUser UserToken userToken) {
@@ -39,6 +42,9 @@ public class ShoppingCartController {
         return CommonResult.success(itemPage);
     }
 
+    /**
+     * 添加商品信息
+     */
     @PostMapping("/shop-cart")
     @ApiOperation(value = "添加商品到购物车接口", notes = "传参为商品id、数量")
     public CommonResult addItem(@RequestBody SaveCartItemParam saveCartItemParam, @TokenToMallUser UserToken userToken){
@@ -49,6 +55,9 @@ public class ShoppingCartController {
         return CommonResult.failure(result);
     }
 
+    /**
+     * 修改购物车中商品的数量
+     */
     @PutMapping("/shop-cart")
     @ApiOperation(value = "修改购物项数据", notes = "传参为购物项id、数量")
     public CommonResult updateItem(@RequestBody UpdateCartItemParam updateCartItemParam, @TokenToMallUser UserToken token) {
@@ -78,6 +87,9 @@ public class ShoppingCartController {
         return CommonResult.failure(ServiceResultEnum.OPERATE_ERROR.getResult());
     }
 
+    /**
+     * 查询特定用户的购物车的明细
+     */
     @GetMapping("/shop-cart/settle")
     @ApiOperation(value = "根据购物项id数组查询购物项明细", notes = "确认订单页面使用")
     public CommonResult settle(Long[] ids, @TokenToMallUser UserToken userToken) {
@@ -94,6 +106,9 @@ public class ShoppingCartController {
         return CommonResult.success(list);
     }
 
+    /**
+     * 根据购物项的id查询购物详情
+     */
     @GetMapping("/shop-cart/listByCartItemIds")
     @ApiOperation(value = "购物车列表")
     public CommonResult cartItemListByIds(@RequestParam("cartItemIds") List<Long> cartItemIds) {

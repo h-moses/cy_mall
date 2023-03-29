@@ -27,13 +27,16 @@ public class ShoppingCartServiceImpl extends ServiceImpl<ShoppingCartMapper, Sho
     @Override
     public String saveItem(SaveCartItemParam saveCartItemParam, Long userId) {
         ShoppingCartItem cartItem = getOne(new QueryWrapper<ShoppingCartItem>().eq("user_id", userId).eq("goods_id", saveCartItemParam.getGoodsId()).eq("is_deleted", 0));
+//        购物车已经存在该商品
         if (null != cartItem) {
             MallException.fail(ServiceResultEnum.SHOPPING_CART_ITEM_EXIST_ERROR.getResult());
         }
         CommonResult<ProductDTO> result = productServiceFeign.getGoodsDetail(saveCartItemParam.getGoodsId());
+//        该商品不存在
         if (null == result || result.getCode() != 200) {
             return ServiceResultEnum.GOODS_NOT_EXIST.getResult();
         }
+//        添加到购物车的商品数量小于1,返回
         if (saveCartItemParam.getGoodsCount() < 1) {
             return ServiceResultEnum.SHOPPING_CART_ITEM_NUMBER_ERROR.getResult();
         }

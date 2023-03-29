@@ -4,7 +4,6 @@ import com.ms.common.annotation.TokenToAdminUser;
 import com.ms.common.api.CommonResult;
 import com.ms.common.enums.ServiceResultEnum;
 import com.ms.common.exception.MallException;
-import com.ms.product.config.entity.Admin;
 import com.ms.product.entity.LoginAdminUser;
 import com.ms.user.api.UserServiceFeign;
 import org.springframework.core.MethodParameter;
