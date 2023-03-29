@@ -8,6 +8,7 @@ import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -20,18 +21,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Configuration
-@EnableCaching
-@AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisConfig {
 
-    @Resource
-    private LettuceConnectionFactory lettuceConnectionFactory;
-
-    public RedisConfig() {}
+//    @Resource
+//    private LettuceConnectionFactory lettuceConnectionFactory;
 
     @Bean
-    public RedisTemplate<String, Serializable> redisCacheTemplate(LettuceConnectionFactory redisConnectionFactory){
-        RedisTemplate<String,Serializable> template = new RedisTemplate<String,Serializable>();
+    public RedisTemplate<String, Serializable> redisTemplate(LettuceConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Serializable> template = new RedisTemplate<>();
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
@@ -40,33 +37,33 @@ public class RedisConfig {
         return template;
     }
 
-    @Bean
-    public CacheManager cacheManager() {
-        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder
-                .fromConnectionFactory(lettuceConnectionFactory);
-        @SuppressWarnings("serial")
-        Set<String> cacheNames = new HashSet<String>() {
-            {
-                add("codeNameCache");
-            }
-        };
-        builder.initialCacheNames(cacheNames);
-        return builder.build();
-    }
-
-    @Bean
-    public KeyGenerator keyGenerator() {
-        return new KeyGenerator() {
-            @Override
-            public Object generate(Object target, Method method, Object... params) {
-                StringBuffer stringBuffer = new StringBuffer();
-                stringBuffer.append(target.getClass().getName());
-                stringBuffer.append(method.getName());
-                for (Object obj : params) {
-                    stringBuffer.append(obj.toString());
-                }
-                return stringBuffer.toString();
-            }
-        };
-    }
+//    @Bean
+//    public CacheManager cacheManager() {
+//        RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder
+//                .fromConnectionFactory(lettuceConnectionFactory);
+//        @SuppressWarnings("serial")
+//        Set<String> cacheNames = new HashSet<String>() {
+//            {
+//                add("codeNameCache");
+//            }
+//        };
+//        builder.initialCacheNames(cacheNames);
+//        return builder.build();
+//    }
+//
+//    @Bean
+//    public KeyGenerator keyGenerator() {
+//        return new KeyGenerator() {
+//            @Override
+//            public Object generate(Object target, Method method, Object... params) {
+//                StringBuffer stringBuffer = new StringBuffer();
+//                stringBuffer.append(target.getClass().getName());
+//                stringBuffer.append(method.getName());
+//                for (Object obj : params) {
+//                    stringBuffer.append(obj.toString());
+//                }
+//                return stringBuffer.toString();
+//            }
+//        };
+//    }
 }

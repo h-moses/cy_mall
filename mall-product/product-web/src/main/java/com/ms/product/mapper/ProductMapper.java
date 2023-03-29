@@ -16,4 +16,6 @@ public interface ProductMapper extends BaseMapper<Product> {
     int batchUpdateStatus(@Param("prodIds") Long[] ids, @Param("status") int status);
 
     int updateStock(@Param("stocks") List<StockNumDTO> stocks);
+
+    int increaseStock(@Param("stocks") List<StockNumDTO> stocks);
 }

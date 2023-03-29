@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ms.common.annotation.TokenToMallUser;
 import com.ms.common.api.CommonResult;
 import com.ms.common.enums.ServiceResultEnum;
-import com.ms.common.exception.MallException;
 import com.ms.common.pojo.UserToken;
 import com.ms.common.utils.BeanUtil;
 import com.ms.order.controller.param.UpdateUserAddressParam;

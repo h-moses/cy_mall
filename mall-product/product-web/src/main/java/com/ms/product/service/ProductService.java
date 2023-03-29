@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface ProductService extends IService<Product> {
 
-    public String saveProduct(Product product);
+    String saveProduct(Product product);
 
-    public String updateProduct(Product product);
+    String updateProduct(Product product);
 
-    public boolean updateStatus(Long[] ids, int status);
+    boolean updateStatus(Long[] ids, int status);
 
-    public int updateStock(List<StockNumDTO> stocks);
+    int updateStock(List<StockNumDTO> stocks, boolean isCancel);
 }

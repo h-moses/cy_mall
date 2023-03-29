@@ -10,9 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.annotation.Resource;
 import java.util.List;
 
-@Slf4j
 @Configuration
-public class UserWebbConfig implements WebMvcConfigurer {
+public class UserWebConfig implements WebMvcConfigurer {
 
     @Resource
     private TokenToAdminUserMethodArgumentResolver adminUserMethodArgumentResolver;

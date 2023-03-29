@@ -20,7 +20,7 @@ import java.util.List;
 public class UserKnife4jConfig {
 
 
-    @Bean()
+    @Bean
     public Docket docket() {
         ParameterBuilder builder = new ParameterBuilder();
         List<Parameter> parameters = new ArrayList<>();
@@ -36,7 +36,7 @@ public class UserKnife4jConfig {
                         .description("# 商城用户管理接口文档")
                         .version("1.0")
                         .build())
-                .groupName("用户管理服务")
+                .groupName("用户管理")
                 .select()
                 //这里指定Controller扫描包路径
                 .apis(RequestHandlerSelectors.basePackage("com.ms.user.controller"))

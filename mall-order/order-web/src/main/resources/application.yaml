@@ -22,12 +22,16 @@ spring:
       password: nacos
     sentinel:
       transport:
+        clientIp: 127.0.0.1
         port: 8719
         dashboard: 127.0.0.1:8855
-        clientIp: 127.0.0.1
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+  rabbitmq:
+    password: admin
+    username: admin
 
 seata:
   enabled: true

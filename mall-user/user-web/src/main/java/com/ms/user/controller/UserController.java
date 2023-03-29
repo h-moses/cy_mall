@@ -44,7 +44,6 @@ public class UserController {
         if (!NumberUtil.isPhone(userLoginParam.getLoginName())) {
             return CommonResult.failure(ServiceResultEnum.LOGIN_NAME_IS_NOT_PHONE.getResult());
         }
-        log.info("login：", MD5Utils.md5Hex(userLoginParam.getPasswordMd5(), "UTF-8"));
         User user = userService.getOne(new QueryWrapper<User>().eq("login_name", userLoginParam.getLoginName()).eq("password_md5", MD5Utils.md5Hex(userLoginParam.getPasswordMd5(), "UTF-8")));
         if (null != user) {
             if (user.getLockedFlag().intValue() == 1) {

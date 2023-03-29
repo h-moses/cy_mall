@@ -75,9 +75,14 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     @Override
-    public int updateStock(List<StockNumDTO> stocks) {
-//        用原有库存减去输入的数量
-        int i = getBaseMapper().updateStock(stocks);
-        return i;
+    public int updateStock(List<StockNumDTO> stocks, boolean isCancel) {
+        int res = 0;
+        if (isCancel) {
+            res = getBaseMapper().increaseStock(stocks);
+        } else {
+            //        用原有库存减去输入的数量
+            res = getBaseMapper().updateStock(stocks);
+        }
+        return res;
     }
 }

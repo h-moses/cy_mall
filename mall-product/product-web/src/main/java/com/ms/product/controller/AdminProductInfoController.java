@@ -14,6 +14,7 @@ import com.ms.product.entity.Product;
 import com.ms.product.entity.UpdateStockNumDTO;
 import com.ms.product.service.CategoryService;
 import com.ms.product.service.ProductService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -117,8 +118,19 @@ public class AdminProductInfoController {
 
     @PutMapping("/updateStock")
     @ApiOperation(value = "修改库存")
-    public CommonResult updateStock(@RequestBody UpdateStockNumDTO updateStockNumDTO, @TokenToAdminUser LoginAdminUser adminUser) {
-        int i = productService.updateStock(updateStockNumDTO.getStockNumDTOS());
+    public CommonResult updateStock(@RequestBody UpdateStockNumDTO updateStockNumDTO) {
+        int i = productService.updateStock(updateStockNumDTO.getStockNumDTOS(), false);
+        if (i > 0) {
+            return CommonResult.success(i);
+        } else {
+            return CommonResult.failure("修改失败");
+        }
+    }
+
+    @PutMapping("/recoverStock")
+    @ApiOperation(value = "恢复库存")
+    public CommonResult recoverStock(@RequestBody UpdateStockNumDTO updateStockNumDTO) {
+        int i = productService.updateStock(updateStockNumDTO.getStockNumDTOS(), true);
         if (i > 0) {
             return CommonResult.success(i);
         } else {

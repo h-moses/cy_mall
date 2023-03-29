@@ -9,4 +9,11 @@
             where goods_id=#{stockDTO.goodsId} and stock_num>=#{stockDTO.goodsCount} and goods_sell_status=0;
         </foreach>
     </update>
+
+    <update id="increaseStock">
+        <foreach collection="stocks" item="stockDTO">
+            update mall_goods_info set stock_num=stock_num+#{stockDTO.goodsCount}
+            where goods_id=#{stockDTO.goodsId};
+        </foreach>
+    </update>
 </mapper>

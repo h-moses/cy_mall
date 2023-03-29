@@ -12,11 +12,11 @@ import java.util.Map;
 
 public interface MallOrderService extends IService<MallOrder> {
 
-    public MallOrderDetailVO getOrderByNo(String orderNo, Long userId);
+    MallOrderDetailVO getOrderByNo(String orderNo, Long userId);
 
-    public MallOrderDetailVO getOrderById(Long orderId);
+    MallOrderDetailVO getOrderById(Long orderId);
 
-    public Page<MallOrderListVO> getOrderList(Page page, Map map);
+    Page<MallOrderListVO> getOrderList(Page page, Map map);
 
     String cancelOrder(String orderNo, Long userId);
 
@@ -31,4 +31,6 @@ public interface MallOrderService extends IService<MallOrder> {
     String closeOrder(Long[] ids);
 
     String saveOrder(Long userId, MallUserAddress address, List<Long> cartItemIds);
+
+    String cancelTimeoutOrder(String orderNo);
 }
